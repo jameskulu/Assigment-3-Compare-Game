@@ -1,5 +1,6 @@
 package com.jameskulu.comparegame
 
+import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -7,16 +8,27 @@ import android.widget.Button
 import android.widget.TextView
 import java.util.*
 
+
 class MainActivity : AppCompatActivity() {
+
+    private lateinit var btnFirst:Button
+    private lateinit var btnSecond:Button
+    private lateinit var btnRestart:Button
+    private lateinit var tvCorrect:TextView
+    private lateinit var tvIncorrect:TextView
+    private lateinit var tvResult:TextView
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val btnFirst: Button = findViewById(R.id.btnFirst)
-        val btnSecond: Button = findViewById(R.id.btnSecond)
-        val btnRestart: Button = findViewById(R.id.btnRestart)
-        val tvCorrect: TextView = findViewById(R.id.tvCorrect)
-        val tvIncorrect: TextView = findViewById(R.id.tvIncorrect)
+        btnFirst = findViewById(R.id.btnFirst)
+        btnSecond = findViewById(R.id.btnSecond)
+        btnRestart = findViewById(R.id.btnRestart)
+        tvCorrect = findViewById(R.id.tvCorrect)
+        tvIncorrect = findViewById(R.id.tvIncorrect)
+        tvResult = findViewById(R.id.tvResult)
 
         var correctCount = 0
         var incorrectCount = 0
@@ -28,67 +40,85 @@ class MainActivity : AppCompatActivity() {
         btnSecond.text = randomNumber2.toString()
 
 
-            btnFirst.setOnClickListener {
+        btnFirst.setOnClickListener {
 
-                if (gameCount > 4){
-                    btnFirst.isClickable = false
-                    btnSecond.isClickable = false
-                    tvCorrect.visibility = View.VISIBLE
-                    tvIncorrect.visibility = View.VISIBLE
-                    btnRestart.visibility = View.VISIBLE
+            if (gameCount == 10){
+                btnFirst.isClickable = false
+                btnSecond.isClickable = false
+                tvCorrect.visibility = View.VISIBLE
+                tvIncorrect.visibility = View.VISIBLE
+                btnRestart.visibility = View.VISIBLE
+                if (correctCount > incorrectCount){
+                    tvResult.text = "You won !"
+                    tvResult.setBackgroundColor(Color.GREEN)
                 }
-                else {
-
-                    if (btnFirst.text.toString().toInt() > btnSecond.text.toString().toInt()) {
-                        correctCount += 1
-                        tvCorrect.text = "Correct: $correctCount"
-                        gameCount += 1
-                        println(gameCount)
-                    }
-                    if (btnFirst.text.toString().toInt() < btnSecond.text.toString().toInt()) {
-                        incorrectCount += 1
-                        tvIncorrect.text = "Incorrect: $incorrectCount"
-                        gameCount += 1
-                        println(gameCount)
-                    }
-
-
-                    val randomNumber: Int = Random().nextInt(100)
-                    val randomNumber2: Int = Random().nextInt(100)
-                    btnFirst.text = randomNumber.toString()
-                    btnSecond.text = randomNumber2.toString()
+                if (correctCount < incorrectCount){
+                    tvResult.text = "You lose !"
+                    tvResult.setBackgroundColor(Color.RED)
+                }
+                if (correctCount == incorrectCount){
+                    tvResult.text = "Draw !"
+                    tvResult.setBackgroundColor(Color.YELLOW)
                 }
             }
-
-            btnSecond.setOnClickListener {
-                if (gameCount > 4) {
-                    btnFirst.isClickable = false
-                    btnSecond.isClickable = false
-                    tvCorrect.visibility = View.VISIBLE
-                    tvIncorrect.visibility = View.VISIBLE
-                    btnRestart.visibility = View.VISIBLE
-                } else {
-                    if (btnFirst.text.toString().toInt() < btnSecond.text.toString().toInt()) {
-                        correctCount += 1
-                        tvCorrect.text = "Correct: $correctCount"
-                        gameCount += 1
-                        println(gameCount)
-
-                    }
-                    if (btnFirst.text.toString().toInt() > btnSecond.text.toString().toInt()) {
-                        incorrectCount += 1
-                        tvIncorrect.text = "Incorrect: $incorrectCount"
-                        gameCount += 1
-                        println(gameCount)
-                    }
-
-                    val randomNumber: Int = Random().nextInt(100)
-                    val randomNumber2: Int = Random().nextInt(100)
-                    btnFirst.text = randomNumber.toString()
-                    btnSecond.text = randomNumber2.toString()
-
+            else {
+                if (btnFirst.text.toString().toInt() > btnSecond.text.toString().toInt()) {
+                    correctCount += 1
+                    tvCorrect.text = "Correct: $correctCount"
+                    gameCount += 1
                 }
+                if (btnFirst.text.toString().toInt() < btnSecond.text.toString().toInt()) {
+                    incorrectCount += 1
+                    tvIncorrect.text = "Incorrect: $incorrectCount"
+                    gameCount += 1
+                }
+                val randomNumber: Int = Random().nextInt(100)
+                val randomNumber2: Int = Random().nextInt(100)
+                btnFirst.text = randomNumber.toString()
+                btnSecond.text = randomNumber2.toString()
             }
+        }
+
+
+
+        btnSecond.setOnClickListener {
+            if (gameCount == 10) {
+                btnFirst.isClickable = false
+                btnSecond.isClickable = false
+                tvCorrect.visibility = View.VISIBLE
+                tvIncorrect.visibility = View.VISIBLE
+                btnRestart.visibility = View.VISIBLE
+
+                if (correctCount > incorrectCount){
+                    tvResult.text = "You won !"
+                    tvResult.setBackgroundColor(Color.GREEN)
+                }
+                if (correctCount < incorrectCount){
+                    tvResult.text = "You lose !"
+                    tvResult.setBackgroundColor(Color.RED)
+                }
+                if (correctCount == incorrectCount){
+                    tvResult.text = "Draw !"
+                    tvResult.setBackgroundColor(Color.YELLOW)
+                }
+            } else {
+                if (btnFirst.text.toString().toInt() < btnSecond.text.toString().toInt()) {
+                    correctCount += 1
+                    tvCorrect.text = "Correct: $correctCount"
+                    gameCount += 1
+                }
+                if (btnFirst.text.toString().toInt() > btnSecond.text.toString().toInt()) {
+                    incorrectCount += 1
+                    tvIncorrect.text = "Incorrect: $incorrectCount"
+                    gameCount += 1
+                }
+
+                val randomNumber: Int = Random().nextInt(100)
+                val randomNumber2: Int = Random().nextInt(100)
+                btnFirst.text = randomNumber.toString()
+                btnSecond.text = randomNumber2.toString()
+            }
+        }
 
         btnRestart.setOnClickListener {
             gameCount = 0
@@ -99,6 +129,8 @@ class MainActivity : AppCompatActivity() {
             btnFirst.isClickable = true
             btnSecond.isClickable = true
             btnRestart.visibility = View.INVISIBLE
+            tvResult.text = ""
+            tvResult.setBackgroundColor(Color.TRANSPARENT)
 
             tvCorrect.visibility = View.INVISIBLE
             tvIncorrect.visibility = View.INVISIBLE
@@ -120,3 +152,6 @@ class MainActivity : AppCompatActivity() {
 
 
 }
+
+
+
