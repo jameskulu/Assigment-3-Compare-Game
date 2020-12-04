@@ -140,12 +140,6 @@ class MainActivity : AppCompatActivity() {
             btnFirst.text = randomNumber.toString()
             btnSecond.text = randomNumber2.toString()
         }
-        gameCount = 0
-        correctCount = 0
-        incorrectCount = 0
-
-
-
     }
 
 
